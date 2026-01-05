@@ -16,4 +16,9 @@ public interface BookRepo extends JpaRepository<Book, Integer> {
     @Query("SELECT B FROM Book B WHERE B.category= :category")
     List<Book> findBookByCategory(String category);
 
+    @Query("SELECT DISTINCT B.category FROM Book B")
+    List<String> findDistinctCategories();
+
+    @Query("SELECT B.shelfNumber FROM Book B WHERE B.category= :category")
+    List<Integer> findShelfNumberByCategory(String category);
 }

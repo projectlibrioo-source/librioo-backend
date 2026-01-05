@@ -6,6 +6,7 @@ import org.example.projectlibrioo.Model.Member;
 import org.example.projectlibrioo.Repository.BookRepo;
 import org.example.projectlibrioo.Repository.GuestRepo;
 import org.example.projectlibrioo.Repository.MemberRepo;
+import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,5 +31,13 @@ public class UserService {
 
     public Guest checkGuestId(int guestId) {
         return guestRepo.findGuestByGuestID(guestId);
+    }
+
+    public List<String> getCategories() {
+        return bookRepo.findDistinctCategories();
+    }
+
+    public List<Integer> searchByCategory(String category) {
+        return bookRepo.findShelfNumberByCategory(category);
     }
 }

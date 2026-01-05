@@ -48,4 +48,20 @@ public class UserController {
     public ResponseEntity<List<Book>> searchByBookName(@RequestParam("keyword") String bookName){
         return new ResponseEntity<>(userService.getBookByName(bookName), HttpStatus.OK);
     }
+
+    @GetMapping("/getcategory")
+    public ResponseEntity<List<String>> getAllCategories(){
+        List<String> listOfCategories = userService.getCategories();
+
+        if (listOfCategories == null){
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }else {
+            return new ResponseEntity<>(listOfCategories,HttpStatus.OK);
+        }
+    }
+
+    @GetMapping("/searchcategory")
+    public ResponseEntity<List<Integer>> searchByCategory(@RequestParam("category") String category){
+        return new ResponseEntity<List<Integer>>(userService.searchByCategory(category),HttpStatus.OK);
+    }
 }
