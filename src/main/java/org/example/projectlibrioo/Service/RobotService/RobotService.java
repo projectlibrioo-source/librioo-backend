@@ -1,10 +1,10 @@
 package org.example.projectlibrioo.Service.RobotService;
 
-import java.util.List;
-
 import org.example.projectlibrioo.navigation.ShelfPathMap;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
 @Service
 public class RobotService {
     private final ShelfPathMap shelfPathMap;
@@ -19,7 +19,7 @@ public class RobotService {
         List<String> path = shelfPathMap.getPath(shelfNumber);
         String command = String.join(",", path);
 
-        String url = "http://192.168.4.1/move?cmd=" + command;
+        String url = "http://192.168.1.5/move?cmd=" + command;
         restTemplate.getForObject(url, String.class);
     }
 }
