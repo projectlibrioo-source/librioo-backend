@@ -18,7 +18,13 @@ public class AdminService {
     }
 
     public Book getAllBooks(int bookId) {
-        return null;
+        Book book = bookRepo.findById(bookId);
+
+        if (book != null){
+            return book;
+        }else {
+            return null;
+        }
     }
 
 
