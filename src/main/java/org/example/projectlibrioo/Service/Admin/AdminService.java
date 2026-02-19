@@ -31,6 +31,10 @@ public class AdminService {
         return bookRepo.save(book);
     }
 
+    public Boolean deleteBooks(int bookId) {
+        return true;
+    }
+
 
 //    public Book getAllBooks(int bookId) {
 //        return bookRepo.findById(bookId);

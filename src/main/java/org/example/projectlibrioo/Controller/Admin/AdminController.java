@@ -92,6 +92,12 @@ public class AdminController {
         }
     }
 
+    @DeleteMapping("/deletebook")
+    public ResponseEntity<String> deleteBooks(@RequestParam("bookid") int bookId){
+        Boolean bookDeleted = adminService.deleteBooks(bookId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @GetMapping("/test")
     public String test() {
         return "API is working!";
