@@ -29,10 +29,10 @@ public class RobotService {
 
     public void navigateToShelf(int shelfNumber) {
 
-        /*List<String> path = shelfPathMap.getPath(shelfNumber);
+        List<String> path = shelfPathMap.getPath(shelfNumber);
         String command = String.join(",", path);
 
-        String encodedCommand = URLEncoder.encode(command, StandardCharsets.UTF_8);*/
+        String encodedCommand = URLEncoder.encode(command, StandardCharsets.UTF_8);
 
         String url = "http://10.102.165.232/send?num=" + shelfNumber;
         restTemplate.getForObject(url, String.class);
