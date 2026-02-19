@@ -73,8 +73,12 @@ public class AdminController {
     @GetMapping("/getallbooks")
     public ResponseEntity<Book> getAllBooks(@RequestParam("bookid") int bookId){
         Book returnedBook = adminService.getAllBooks(bookId);
+        if (returnedBook == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }else {
+            return new ResponseEntity<>(returnedBook, HttpStatus.FOUND);
+        }
 
-        return null;
 
     }
 
