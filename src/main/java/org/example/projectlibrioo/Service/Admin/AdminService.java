@@ -32,7 +32,19 @@ public class AdminService {
     }
 
     public Boolean deleteBooks(int bookId) {
-        return true;
+        Book bookToDelete = bookRepo.findById(bookId);
+        if (bookToDelete!=null){
+            try{
+                bookRepo.delete(bookToDelete);
+                return true;
+
+            }catch (Exception e){
+                return false;
+            }
+
+        }else {
+            return false;
+        }
     }
 
 
