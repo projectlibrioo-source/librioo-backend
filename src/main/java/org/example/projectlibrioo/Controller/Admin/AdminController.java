@@ -95,7 +95,12 @@ public class AdminController {
     @DeleteMapping("/deletebook")
     public ResponseEntity<String> deleteBooks(@RequestParam("bookid") int bookId){
         Boolean bookDeleted = adminService.deleteBooks(bookId);
-        return new ResponseEntity<>(HttpStatus.OK);
+
+        if (bookDeleted){
+            return new ResponseEntity<>("Book deleted successfully",HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+        }
     }
 
     @GetMapping("/test")
