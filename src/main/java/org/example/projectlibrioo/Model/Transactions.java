@@ -14,8 +14,8 @@ public class Transactions {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int transactionId;
-    private int bookId;
     private int libraryId;
+    private int bookId;
     private LocalDate borrowDate;
     private LocalDate returnDate;
     private String status;
