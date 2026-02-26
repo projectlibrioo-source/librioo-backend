@@ -131,4 +131,19 @@ public class AdminController {
     }
 
 
+    @PostMapping("/borrowbook")
+    public ResponseEntity<Transactions> borrowBook@RequestBody Transactions transactionBook){
+        Boolean bookBorrowed = transactionService.checkEligibility(transactionBook);
+
+        if (bookBorrowed){
+            return new ResponseEntity<>
+                    (transactionService.saveTransaction(transactionBook),HttpStatus.OK);
+
+        }
+        else {
+            return new  ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+    }
+
+
 }
