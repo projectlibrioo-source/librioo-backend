@@ -2,6 +2,7 @@ package org.example.projectlibrioo.Controller.Admin;
 
 import org.example.projectlibrioo.Model.Book;
 import org.example.projectlibrioo.Model.Guest;
+import org.example.projectlibrioo.Model.Member;
 import org.example.projectlibrioo.Service.Admin.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -88,6 +89,17 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("ERROR: " + e.getMessage());
         }
+    }
+
+    @GetMapping("/getallmembers")
+    public ResponseEntity<Member> getAllMembers(@RequestParam("memberid") int memberId){
+        Member returnedMember = adminService.getAllMembers(memberId);
+        if (returnedMember == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }else {
+            return new ResponseEntity<>(returnedMember, HttpStatus.FOUND);
+        }
+
     }
 
     @GetMapping("/test")
