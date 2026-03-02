@@ -124,6 +124,17 @@ public class AdminController {
 
     }
 
+    @PutMapping("/updateguest")
+    public ResponseEntity<Guest> updateGuests(@RequestBody Guest guest){
+        Guest updatedGuest = adminService.updateGuest(guest);
+
+        if (updatedGuest != null){
+            return new ResponseEntity<>(updatedGuest, HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     @GetMapping("/test")
     public String test() {
         return "API is working!";
