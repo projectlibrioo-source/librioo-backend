@@ -1,8 +1,10 @@
 package org.example.projectlibrioo.Controller.Admin;
-
 import org.example.projectlibrioo.Model.Book;
 import org.example.projectlibrioo.Model.Member;
+import org.example.projectlibrioo.Model.ReturnDTO;
+import org.example.projectlibrioo.Model.Transactions;
 import org.example.projectlibrioo.Service.Admin.AdminService;
+import org.example.projectlibrioo.Service.Transactions.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,9 @@ import tools.jackson.databind.ObjectMapper;
 public class AdminController {
     @Autowired
     private AdminService adminService;
+    @Autowired
+    private TransactionService transactionService;
+
 
     /*@PostMapping("/addbook")
     public ResponseEntity<Book> addBook(@RequestPart("book") Book book, @RequestPart("bookImage") MultipartFile bookImage) throws Exception{
@@ -128,6 +133,29 @@ public class AdminController {
     @GetMapping("/test")
     public String test() {
         return "API is working!";
+    }
+
+
+    @PostMapping("/borrowbook")
+    public ResponseEntity<Transactions> borrowBook(@RequestBody Transactions transactionBook){
+        Boolean bookBorrowed = transactionService.checkEligibility(transactionBook);
+
+        if (bookBorrowed){
+            return new ResponseEntity<>
+                    (transactionService.saveTransaction(transactionBook),HttpStatus.OK);
+
+        }
+        else {
+            return new  ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+    }
+
+    @PostMapping("/getfines")
+    public ResponseEntity<Double> calculateFines(@RequestBody
+    ReturnDTO returnBook){
+        double fine = transactionService.getFines(returnBook);
+
+        return new ResponseEntity<>(fine,HttpStatus.OK);
     }
 
 
