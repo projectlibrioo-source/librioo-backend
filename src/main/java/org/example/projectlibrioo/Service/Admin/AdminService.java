@@ -53,6 +53,22 @@ public class AdminService {
         }
     }
 
+    public Boolean deleteMember(int memberId) {
+        Member memberToDelete = memberRepo.findUserByLibraryID(memberId);
+        if (memberToDelete!=null){
+            try{
+                memberRepo.delete(memberToDelete);
+                return true;
+
+            }catch (Exception e){
+                return false;
+            }
+
+        }else {
+            return false;
+        }
+    }
+
     public Guest updateGuest(Guest guest) {
         return guestRepo.save(guest);
     }
