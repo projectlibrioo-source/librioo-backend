@@ -135,6 +135,17 @@ public class AdminController {
         }
     }
 
+    @DeleteMapping("/deletemember")
+    public ResponseEntity<String> deleteMembers(@RequestParam("memberid") int memberId){
+        Boolean memberDeleted = adminService.deleteMember(memberId);
+
+        if (memberDeleted){
+            return new ResponseEntity<>("Book deleted successfully",HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+        }
+    }
+
     @GetMapping("/test")
     public String test() {
         return "API is working!";
