@@ -1,7 +1,10 @@
 package org.example.projectlibrioo.Controller.Admin;
-
 import org.example.projectlibrioo.Model.Book;
+import org.example.projectlibrioo.Model.Member;
+import org.example.projectlibrioo.Model.ReturnDTO;
+import org.example.projectlibrioo.Model.Transactions;
 import org.example.projectlibrioo.Service.Admin.AdminService;
+import org.example.projectlibrioo.Service.Transactions.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +18,9 @@ import tools.jackson.databind.ObjectMapper;
 public class AdminController {
     @Autowired
     private AdminService adminService;
+    @Autowired
+    private TransactionService transactionService;
+
 
     /*@PostMapping("/addbook")
     public ResponseEntity<Book> addBook(@RequestPart("book") Book book, @RequestPart("bookImage") MultipartFile bookImage) throws Exception{
@@ -46,6 +52,7 @@ public class AdminController {
         }
     }*/
 
+    //Manage books
     @PostMapping("/addbook")
     public ResponseEntity<?> addBook(
             @RequestPart("book") String bookJson,  // ✅ Accept as String
@@ -70,11 +77,86 @@ public class AdminController {
         }
     }
 
+    @GetMapping("/getallbooks")
+    public ResponseEntity<Book> getAllBooks(@RequestParam("bookid") int bookId){
+        Book returnedBook = adminService.getAllBooks(bookId);
+        if (returnedBook == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }else {
+            return new ResponseEntity<>(returnedBook, HttpStatus.FOUND);
+        }
+
+    }
+
+    @PutMapping("/updatebook")
+    public ResponseEntity<Book> updateBooks(@RequestBody Book book){
+        Book updatedBook = adminService.updateBooks(book);
+
+        if (updatedBook != null){
+            return new ResponseEntity<>(updatedBook, HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping("/deletebook")
+    public ResponseEntity<String> deleteBooks(@RequestParam("bookid") int bookId){
+        Boolean bookDeleted = adminService.deleteBooks(bookId);
+
+        if (bookDeleted){
+            return new ResponseEntity<>("Book deleted successfully",HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+        }
+    }
+
+    //Manage Users
+    @PostMapping("/addmember")
+    public ResponseEntity<?> addMember(@RequestBody Member member) {
+        try {
+
+            Member memberSaved = adminService.saveMemberData(member);
+
+            if (memberSaved != null) {
+                return new ResponseEntity<>(memberSaved,HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("ERROR: " + e.getMessage());
+        }
+    }
+
     @GetMapping("/test")
     public String test() {
         return "API is working!";
     }
 
 
-    public String test1(){return "he hee";}
+    @PostMapping("/borrowbook")
+    public ResponseEntity<Transactions> borrowBook(@RequestBody Transactions transactionBook){
+        Boolean bookBorrowed = transactionService.checkEligibility(transactionBook);
+
+        if (bookBorrowed){
+            return new ResponseEntity<>
+                    (transactionService.saveTransaction(transactionBook),HttpStatus.OK);
+
+        }
+        else {
+            return new  ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+    }
+
+    @PostMapping("/getfines")
+    public ResponseEntity<Double> calculateFines(@RequestBody
+    ReturnDTO returnBook){
+        double fine = transactionService.getFines(returnBook);
+
+        return new ResponseEntity<>(fine,HttpStatus.OK);
+    }
+
+
 }
