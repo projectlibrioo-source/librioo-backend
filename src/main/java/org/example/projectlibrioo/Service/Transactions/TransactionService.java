@@ -64,5 +64,13 @@ public class TransactionService {
         return fine;
     }
 
-
+    public TransactionService(TransactionRepo transactionRepo) {
+        this.transactionRepo = transactionRepo;
     }
+
+    public List<Transactions> getTransactionsByDate(LocalDate Date){
+        return transactionRepo.findByBorrowDate(Date);
+    }
+
+
+}
