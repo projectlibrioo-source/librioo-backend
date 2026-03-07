@@ -64,5 +64,11 @@ public class TransactionService {
         return fine;
     }
 
+    public boolean markAsReturned(ReturnDTO returnDTO){
+        Transactions data = transactionRepo.findByIds(returnDTO.getLibraryId(),returnDTO.getBookId());
+        data.setStatus("Returned");
+        return  true;
+    }
+
 
     }
