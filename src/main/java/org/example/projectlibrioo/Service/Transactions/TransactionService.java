@@ -72,5 +72,13 @@ public class TransactionService {
         return transactionRepo.findByBorrowDate(Date);
     }
 
+    public List<Transactions> getTransactionsBetweenDates(LocalDate start, LocalDate end) {
+        return transactionRepo.findByBorrowDateBetween(start, end);
+    }
+
+    public List<Transactions> getAllTransactions() {
+        return transactionRepo.findAll();
+    }
+
 
 }
