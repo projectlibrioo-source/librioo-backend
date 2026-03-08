@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -16,6 +17,12 @@ public interface TransactionRepo extends JpaRepository<Transactions,Integer> {
 
     @Query("SELECT r FROM Transactions r WHERE r.libraryId = :libraryId AND r.bookId = :bookId")
     Transactions findByIds(int libraryId, int bookId);
+
+    //get transaction by exact borrow date
+    List<Transactions> findByBorrowDate(LocalDate borrowDate);
+
+    // Get transactions between two dates
+    List<Transactions> findByBorrowDateBetween(LocalDate startDate, LocalDate endDate);
 
 
 }
