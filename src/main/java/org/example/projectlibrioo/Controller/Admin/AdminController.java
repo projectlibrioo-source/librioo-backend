@@ -150,13 +150,29 @@ public class AdminController {
         }
     }
 
+    @GetMapping("/getusers")
+    public ResponseEntity<Transactions> getAllUsers(@RequestParam("bookid") int bookId){
+        Transactions foundUser = transactionService.getAllUSers(bookId);
+
+        if (foundUser == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }else {
+            return new ResponseEntity<>(foundUser, HttpStatus.OK);
+        }
+    }
+
     @PostMapping("/getfines")
-    public ResponseEntity<Double> calculateFines(@RequestBody
-    ReturnDTO returnBook){
+    public ResponseEntity<Double> calculateFines(@RequestBody ReturnDTO returnBook){
         double fine = transactionService.getFines(returnBook);
 
         return new ResponseEntity<>(fine,HttpStatus.OK);
     }
 
+    @PutMapping("/confirmreturn")
+    public ResponseEntity<Transactions> confirmTheReturn(@RequestBody ReturnDTO returnDTO){
+        Transactions bookReturned = transactionService.confirmReturn(returnDTO);
+
+        return new ResponseEntity<>(bookReturned, HttpStatus.OK);
+    }
 
 }

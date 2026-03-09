@@ -76,6 +76,16 @@ public class TransactionService {
         return fine;
     }
 
+    public Transactions confirmReturn(ReturnDTO bookToReturn){
+        Transactions returnedData = transactionRepo.findByIds(bookToReturn.getLibraryId(),bookToReturn.getBookId());
+        returnedData.setStatus("Returned");
+
+        return transactionRepo.save(returnedData);
+
+
+
+    }
+
 
     public TransactionService(TransactionRepo transactionRepo) {
         this.transactionRepo = transactionRepo;
