@@ -1,5 +1,7 @@
 package org.example.projectlibrioo.Service.RobotService;
 
+import org.example.projectlibrioo.Model.Robot;
+import org.example.projectlibrioo.Repository.RobotRepo;
 import org.example.projectlibrioo.navigation.ShelfPathMap;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -11,9 +13,11 @@ import java.util.List;
 public class RobotService {
     private final ShelfPathMap shelfPathMap;
     private final RestTemplate restTemplate = new RestTemplate();
+    private final RobotRepo robotRepo;
 
-    public RobotService(ShelfPathMap shelfPathMap) {
+    public RobotService(ShelfPathMap shelfPathMap, RobotRepo robotRepo) {
         this.shelfPathMap = shelfPathMap;
+        this.robotRepo = robotRepo;
     }
 
     /*public void navigateToShelf(int shelfNumber) {
