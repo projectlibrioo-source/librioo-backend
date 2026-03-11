@@ -97,5 +97,22 @@ public class RobotService {
         return robotRepo.existsByRobotName(robotName);
     }
 
+    // Update robot maintenance
+    public Robot updateRobotMaintenance(int robotId,
+                                        LocalDate lastServiceDate,
+                                        LocalDate nextServiceDate,
+                                        String partReplaced,
+                                        String technicianNotes) {
+        Robot robot = getRobotById(robotId);
+        if (robot != null) {
+            robot.setLastServiceDate(lastServiceDate);
+            robot.setNextServiceDate(nextServiceDate);
+            robot.setPartReplaced(partReplaced);
+            robot.setTechnicianNotes(technicianNotes);
+            robot.setStatus("MAINTENANCE");
+            return robotRepo.save(robot);
+        }
+        return null;
+    }
 
 }
