@@ -56,4 +56,9 @@ public class RobotService {
         return robotRepo.save(robot);
     }
 
+    // Get all robots
+    public List<Robot> getAllRobots() {
+        return robotRepo.findAll();
+    }
+
 }
