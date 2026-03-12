@@ -12,9 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import tools.jackson.databind.ObjectMapper;
 
-import java.time.LocalDate;
-import java.util.List;
-
 @RestController
 @RequestMapping("/api")
 @CrossOrigin
@@ -159,23 +156,6 @@ public class AdminController {
         double fine = transactionService.getFines(returnBook);
 
         return new ResponseEntity<>(fine,HttpStatus.OK);
-    }
-
-    //Get all transactions
-    @GetMapping("/transactions")
-    public List<Transactions> getAllTransactions(){
-        return transactionService.getAllTransactions();
-    }
-
-    // Get transaction by specific date
-    @GetMapping("/transactions/{date}")
-    public List<Transactions> getTransactionsByDate(@PathVariable String date){
-        return transactionService.getTransactionsByDate(LocalDate.parse(date));
-    }
-
-    @GetMapping("/transactions/search")
-    public List<Transactions> searchBetweenDates(@RequestParam String start, @RequestParam String end){
-        return transactionService.getTransactionsBetweenDates(LocalDate.parse(start), LocalDate.parse(end));
     }
 
 
