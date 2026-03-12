@@ -81,6 +81,18 @@ public class RobotController {
         }
     }
 
+    // Update robot details (PUT /api/robots/{id})
+    @PutMapping("/robots/{id}")
+    public ResponseEntity<Robot> updateRobot(@PathVariable int id, @RequestBody Robot robot) {
+        robot.setRobotID(id); // Ensure ID matches
+        Robot updatedRobot = robotService.updateRobot(robot);
+        if (updatedRobot != null) {
+            return new ResponseEntity<>(updatedRobot, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     @GetMapping("/robot/test")
     public String test() {
         return "Robot API is working!";
