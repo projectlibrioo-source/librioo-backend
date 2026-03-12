@@ -138,6 +138,35 @@ public class RobotController {
         }
     }
 
+    // Delete robot by search parameter (DELETE /api/robots/delete)
+    @DeleteMapping("/robots/delete")
+    public ResponseEntity<Map<String, String>> deleteRobotByParam(
+            @RequestParam(required = false) Integer id,
+            @RequestParam(required = false) String name) {
+
+        Map<String, String> response = new HashMap<>();
+
+        if (id != null) {
+            boolean deleted = robotService.deleteRobot(id);
+            if (deleted) {
+                response.put("message", "Robot deleted successfully");
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            }
+        } else if (name != null) {
+            Robot robot = robotService.getRobotByName(name);
+            if (robot != null) {
+                boolean deleted = robotService.deleteRobot(robot.getRobotID());
+                if (deleted) {
+                    response.put("message", "Robot deleted successfully");
+                    return new ResponseEntity<>(response, HttpStatus.OK);
+                }
+            }
+        }
+
+        response.put("message", "Robot not found");
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
     @GetMapping("/robot/test")
     public String test() {
         return "Robot API is working!";
