@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -119,6 +120,21 @@ public class RobotController {
             return new ResponseEntity<>(updatedRobot, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    // Delete robot (DELETE /api/robots/{id})
+    @DeleteMapping("/robots/{id}")
+    public ResponseEntity<Map<String, String>> deleteRobot(@PathVariable int id) {
+        boolean deleted = robotService.deleteRobot(id);
+        Map<String, String> response = new HashMap<>();
+
+        if (deleted) {
+            response.put("message", "Robot deleted successfully");
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+            response.put("message", "Robot not found");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }
 
