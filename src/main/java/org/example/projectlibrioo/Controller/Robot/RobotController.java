@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -41,6 +43,16 @@ public class RobotController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("ERROR: " + e.getMessage());
         }
+    }
+
+    // Get all robots (GET /api/robots/all)
+    @GetMapping("/robots/all")
+    public ResponseEntity<List<Robot>> getAllRobots() {
+        List<Robot> robots = robotService.getAllRobots();
+        if (robots.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(robots, HttpStatus.OK);
     }
 
     @GetMapping("/robot/test")
