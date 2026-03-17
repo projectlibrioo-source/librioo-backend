@@ -190,4 +190,16 @@ public class AdminController {
          }
     }
 
+    @GetMapping("/searchmember")
+    public ResponseEntity<List<Member>> getAllUsers(@RequestParam(required = false) String fullname,
+                                                  @RequestParam(required = false) Integer libraryid){
+
+        List<Member> listOfMembers = adminService.getAllMembersByKeyword(fullname,libraryid);
+        if (listOfMembers!=null){
+            return new ResponseEntity<>(listOfMembers, HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
 }

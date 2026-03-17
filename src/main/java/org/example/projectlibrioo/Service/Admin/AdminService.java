@@ -62,6 +62,10 @@ public class AdminService {
         return bookRepo.findAllBooksByKeyword(title,author,isbn);
     }
 
+    public List<Member> getAllMembersByKeyword(String fullname, Integer libraryid) {
+        return memberRepo.findAllMembersByKeyword(fullname,libraryid);
+    }
+
 
 //    public Book getAllBooks(int bookId) {
 //        return bookRepo.findById(bookId);
