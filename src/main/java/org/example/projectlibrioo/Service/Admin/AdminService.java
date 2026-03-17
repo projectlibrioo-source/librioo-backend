@@ -2,8 +2,10 @@ package org.example.projectlibrioo.Service.Admin;
 
 import org.example.projectlibrioo.Model.Book;
 import org.example.projectlibrioo.Model.Member;
+import org.example.projectlibrioo.Model.Robot;
 import org.example.projectlibrioo.Repository.BookRepo;
 import org.example.projectlibrioo.Repository.MemberRepo;
+import org.example.projectlibrioo.Repository.RobotRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,6 +19,8 @@ public class AdminService {
     private BookRepo bookRepo;
     @Autowired
     private MemberRepo memberRepo;
+    @Autowired
+    private RobotRepo robotRepo;
 
     public Book saveBookData(Book book, MultipartFile bookImage) throws Exception {
         book.setImage(bookImage.getBytes());
@@ -64,6 +68,10 @@ public class AdminService {
 
     public List<Member> getAllMembersByKeyword(String fullname, Integer libraryid) {
         return memberRepo.findAllMembersByKeyword(fullname,libraryid);
+    }
+
+    public Robot getAllRobotDetailsByKeyword(Integer robotid, String robotname) {
+        return robotRepo.findRobotsByKeyword(robotid, robotname);
     }
 
 

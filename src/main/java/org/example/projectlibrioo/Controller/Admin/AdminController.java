@@ -1,8 +1,5 @@
 package org.example.projectlibrioo.Controller.Admin;
-import org.example.projectlibrioo.Model.Book;
-import org.example.projectlibrioo.Model.Member;
-import org.example.projectlibrioo.Model.ReturnDTO;
-import org.example.projectlibrioo.Model.Transactions;
+import org.example.projectlibrioo.Model.*;
 import org.example.projectlibrioo.Service.Admin.AdminService;
 import org.example.projectlibrioo.Service.Transactions.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -197,6 +194,18 @@ public class AdminController {
         List<Member> listOfMembers = adminService.getAllMembersByKeyword(fullname,libraryid);
         if (listOfMembers!=null){
             return new ResponseEntity<>(listOfMembers, HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/searchrobot")
+    public ResponseEntity<Robot> getAllRobotDetails(@RequestParam(required = false) Integer robotid,
+                                                    @RequestParam(required = false) String robotname){
+
+        Robot RobotDetails = adminService.getAllRobotDetailsByKeyword(robotid,robotname);
+        if (RobotDetails!=null){
+            return new ResponseEntity<>(RobotDetails, HttpStatus.OK);
         }else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
