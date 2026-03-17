@@ -24,6 +24,10 @@ public interface TransactionRepo extends JpaRepository<Transactions,Integer> {
     // Get transactions between two dates
     List<Transactions> findByBorrowDateBetween(LocalDate startDate, LocalDate endDate);
 
+    long countByStatus(String status); // BORROWED
+
+    long countByReturnDateBeforeAndStatus(LocalDate date, String status); // overdue
+
 
 }
 

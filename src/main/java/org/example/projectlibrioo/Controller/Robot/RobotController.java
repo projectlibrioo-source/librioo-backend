@@ -1,6 +1,7 @@
 package org.example.projectlibrioo.Controller.Robot;
 
 import org.example.projectlibrioo.Model.Robot;
+import org.example.projectlibrioo.Repository.RobotRepo;
 import org.example.projectlibrioo.Service.RobotService.RobotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,8 @@ public class RobotController {
 
     @Autowired
     private RobotService robotService;
+    @Autowired
+    private RobotRepo robotRepository;
 
     // Add new robot (POST /api/robots/add)
     @PostMapping("/robots/add")
@@ -187,6 +190,11 @@ public class RobotController {
     @GetMapping("/robot/test")
     public String test() {
         return "Robot API is working!";
+    }
+
+    @GetMapping("/overview")
+    public List<Robot> getAllRobotOverview() {
+        return robotRepository.findAll();
     }
 
 
