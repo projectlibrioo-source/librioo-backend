@@ -17,4 +17,5 @@ public class Member {
     private String phoneNumber;
     private int age;
     private String NICNumber;
+    private String status;
 }
