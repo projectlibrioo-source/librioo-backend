@@ -62,6 +62,26 @@ public class ReportsService {
 
         return response;
     }
+
+    public SystemReportResponseDTO generateSystemReport(ReportRequestDTO request) {
+        SystemReportResponseDTO response = new SystemReportResponseDTO();
+        List<SystemReportRowDTO> rows = new ArrayList<>();
+
+        LocalDate start = request.getFromDate() != null ? request.getFromDate() : LocalDate.now().minusDays(7);
+        LocalDate end = request.getToDate() != null ? request.getToDate() : LocalDate.now();
+
+        // Dummy data
+        for (LocalDate date = start; !date.isAfter(end); date = date.plusDays(1)) {
+            SystemReportRowDTO row = new SystemReportRowDTO();
+            row.setDate(date);
+            row.setRobotId("Alpha, Beta");
+            row.setEventsLogged("4 Err, 12 Warn");
+            row.setAvgBattery(82.0 + Math.random() * 10);
+            rows.add(row);
+        }
+        response.setRows(rows);
+        return response;
+    }
 }
 
 
