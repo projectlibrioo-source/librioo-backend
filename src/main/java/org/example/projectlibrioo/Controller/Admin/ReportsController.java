@@ -31,14 +31,20 @@ public class ReportsController {
 
     @PostMapping("/generate")
     public ResponseEntity<?> generateReport(@RequestBody ReportRequestDTO request) {
-        if ("LIBRARY".equalsIgnoreCase(request.getReportType())) {
-            LibraryReportResponseDTO report = reportsService.generateLibraryReport(request);
-            return new ResponseEntity<>(report, HttpStatus.OK);
-        } else if ("SYSTEM".equalsIgnoreCase(request.getReportType())) {
-            SystemReportResponseDTO report = reportsService.generateSystemReport(request);
-            return new ResponseEntity<>(report, HttpStatus.OK);
-        } else {
-            return ResponseEntity.badRequest().body("Invalid report type");
+        try {
+            if ("LIBRARY".equalsIgnoreCase(request.getReportType())) {
+                LibraryReportResponseDTO report = reportsService.generateLibraryReport(request);
+                return new ResponseEntity<>(report, HttpStatus.OK);
+            } else if ("SYSTEM".equalsIgnoreCase(request.getReportType())) {
+                SystemReportResponseDTO report = reportsService.generateSystemReport(request);
+                return new ResponseEntity<>(report, HttpStatus.OK);
+            } else {
+                return ResponseEntity.badRequest().body("Invalid report type");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error generating report: " + e.getMessage());
         }
     }
 }
