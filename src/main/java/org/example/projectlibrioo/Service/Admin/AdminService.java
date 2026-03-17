@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Service
 public class AdminService {
 
@@ -16,6 +18,7 @@ public class AdminService {
     @Autowired
     private MemberRepo memberRepo;
 
+    // save book
     public Book saveBookData(Book book, MultipartFile bookImage) throws Exception {
         book.setImage(bookImage.getBytes());
         return bookRepo.save(book);
@@ -31,10 +34,12 @@ public class AdminService {
         }
     }
 
+    // update book
     public Book updateBooks(Book book) {
         return bookRepo.save(book);
     }
 
+    // delete book
     public Boolean deleteBooks(int bookId) {
         Book bookToDelete = bookRepo.findById(bookId);
         if (bookToDelete!=null){
@@ -59,4 +64,15 @@ public class AdminService {
 //    public Book getAllBooks(int bookId) {
 //        return bookRepo.findById(bookId);
 //    }
+
+
+    // get all books for the book page
+    public List<Book> getAllBooks(){
+        return bookRepo.findAll();
+    }
+
+
+
+
+
 }
