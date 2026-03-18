@@ -14,7 +14,7 @@ public class ReportsService {
 
     @Autowired
     private BookRepo bookRepo;
-//test
+
     public DashboardStatsDTO getDashboardStats() {
         DashboardStatsDTO stats = new DashboardStatsDTO();
         stats.setTotalLoans(1234);
