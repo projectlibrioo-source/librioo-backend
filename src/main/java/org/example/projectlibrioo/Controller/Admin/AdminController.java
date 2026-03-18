@@ -3,7 +3,9 @@ package org.example.projectlibrioo.Controller.Admin;
 import org.example.projectlibrioo.Model.Book;
 import org.example.projectlibrioo.Model.Guest;
 import org.example.projectlibrioo.Model.Member;
+import org.example.projectlibrioo.Model.Transactions;
 import org.example.projectlibrioo.Service.Admin.AdminService;
+import org.example.projectlibrioo.Service.Transactions.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,8 @@ import java.util.List;
 public class AdminController {
     @Autowired
     private AdminService adminService;
+    @Autowired
+    private TransactionService transactionService;
 
     /*@PostMapping("/addbook")
     public ResponseEntity<Book> addBook(@RequestPart("book") Book book, @RequestPart("bookImage") MultipartFile bookImage) throws Exception{
@@ -66,6 +70,25 @@ public class AdminController {
                 return ResponseEntity.ok(bookSaved);
             } else {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("ERROR: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/addmember")
+    public ResponseEntity<?> addMember(@RequestBody Member member) {
+        try {
+
+            Member memberSaved = adminService.saveMemberData(member);
+
+            if (memberSaved != null) {
+                return new ResponseEntity<>(memberSaved,HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
 
         } catch (Exception e) {

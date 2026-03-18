@@ -29,6 +29,10 @@ public class AdminService {
         return guestRepo.save(guest);
     }
 
+    public Member saveMemberData(Member member) {
+        return memberRepo.save(member);
+    }
+
     public Member getAllMembers(int memberId) {
         Member member = memberRepo.findUserByLibraryID(memberId);
 
