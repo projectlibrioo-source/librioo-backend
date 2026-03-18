@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 public interface GuestRepo extends JpaRepository<Guest, Integer> {
 
     Guest findGuestByGuestID(int guestID);
+
 }
