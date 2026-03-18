@@ -3,7 +3,9 @@ package org.example.projectlibrioo.Controller.Admin;
 import org.example.projectlibrioo.Model.Book;
 import org.example.projectlibrioo.Model.Guest;
 import org.example.projectlibrioo.Model.Member;
+import org.example.projectlibrioo.Model.Transactions;
 import org.example.projectlibrioo.Service.Admin.AdminService;
+import org.example.projectlibrioo.Service.Transactions.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,9 @@ import java.util.List;
 public class AdminController {
     @Autowired
     private AdminService adminService;
+
+    @Autowired
+    private TransactionService transactionService;
 
     /*@PostMapping("/addbook")
     public ResponseEntity<Book> addBook(@RequestPart("book") Book book, @RequestPart("bookImage") MultipartFile bookImage) throws Exception{
