@@ -128,9 +128,6 @@ public class AdminService {
         }
     }
 
-    public Member saveMemberData(Member member) {
-        return memberRepo.save(member);
-    }
 
     public Guest updateGuest(Guest guest) {
         return guestRepo.save(guest);

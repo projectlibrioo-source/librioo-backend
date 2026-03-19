@@ -1,9 +1,5 @@
 package org.example.projectlibrioo.Controller.Admin;
-import org.example.projectlibrioo.Model.Book;
-import org.example.projectlibrioo.Model.Guest;
-import org.example.projectlibrioo.Model.Member;
-import org.example.projectlibrioo.Model.ReturnDTO;
-import org.example.projectlibrioo.Model.Transactions;
+import org.example.projectlibrioo.Model.*;
 import org.example.projectlibrioo.Service.Admin.AdminService;
 import org.example.projectlibrioo.Service.Transactions.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import tools.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectMapper;
+//import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -336,10 +332,5 @@ public class AdminController {
         return new ResponseEntity<>(members, HttpStatus.OK);
     }
 
-    //Get all transactions
-    @GetMapping("/transactions")
-    public List<Transactions> getAllTransactions(){
-        return transactionService.getAllTransactions();
-    }
 
 }
