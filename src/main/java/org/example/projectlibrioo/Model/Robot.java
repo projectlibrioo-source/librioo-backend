@@ -15,11 +15,7 @@ public class Robot {
     private int robotID;
     private String robotName;
     private String model;
-    private String shelfLocation;
     private LocalDate startDate;
-    private LocalDate lastServiceDate;
-    private LocalDate nextServiceDate;
-    private String partReplaced;
-    private String technicianNotes;
     private String status; // ACTIVE, MAINTENANCE, RETIRED
 }
+

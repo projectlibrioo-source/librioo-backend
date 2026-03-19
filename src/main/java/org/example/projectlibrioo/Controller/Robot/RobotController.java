@@ -1,6 +1,7 @@
 package org.example.projectlibrioo.Controller.Robot;
 
 import org.example.projectlibrioo.Model.Robot;
+import org.example.projectlibrioo.Model.RobotMaintenance;
 import org.example.projectlibrioo.Repository.RobotRepo;
 import org.example.projectlibrioo.Service.RobotService.RobotService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,9 +88,9 @@ public class RobotController {
         }
     }
 
-    // Update robot maintenance (PUT /api/robots/{id}/maintenance)
+    // Log new maintenance entry (PUT /api/robots/{id}/maintenance)
     @PutMapping("/robots/{id}/maintenance")
-    public ResponseEntity<?> updateRobotMaintenance(
+    public ResponseEntity<?> logRobotMaintenance(
             @PathVariable int id,
             @RequestBody Map<String, String> maintenanceData) {
         try {
@@ -98,12 +99,12 @@ public class RobotController {
             String partReplaced = maintenanceData.get("partReplaced");
             String technicianNotes = maintenanceData.get("technicianNotes");
 
-            Robot updatedRobot = robotService.updateRobotMaintenance(
+            RobotMaintenance savedLog = robotService.logMaintenance(
                     id, lastServiceDate, nextServiceDate, partReplaced, technicianNotes
             );
 
-            if (updatedRobot != null) {
-                return new ResponseEntity<>(updatedRobot, HttpStatus.OK);
+            if (savedLog != null) {
+                return new ResponseEntity<>(savedLog, HttpStatus.CREATED);
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
@@ -170,21 +171,14 @@ public class RobotController {
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
-    // Get service history (simplified - returns maintenance info for a robot)
+    // Get full maintenance history for a robot (GET /api/robots/{id}/maintenance)
     @GetMapping("/robots/{id}/maintenance")
-    public ResponseEntity<?> getMaintenanceHistory(@PathVariable int id) {
-        Robot robot = robotService.getRobotById(id);
-        if (robot != null) {
-            Map<String, Object> history = new HashMap<>();
-            history.put("lastServiceDate", robot.getLastServiceDate());
-            history.put("nextServiceDate", robot.getNextServiceDate());
-            history.put("partReplaced", robot.getPartReplaced());
-            history.put("technicianNotes", robot.getTechnicianNotes());
-            history.put("status", robot.getStatus());
-            return new ResponseEntity<>(history, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<List<RobotMaintenance>> getMaintenanceHistory(@PathVariable int id) {
+        List<RobotMaintenance> history = robotService.getMaintenanceHistory(id);
+        if (history == null || history.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
+        return new ResponseEntity<>(history, HttpStatus.OK);
     }
 
     @GetMapping("/robot/test")
