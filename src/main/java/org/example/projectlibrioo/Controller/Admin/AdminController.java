@@ -83,9 +83,8 @@ public class AdminController {
         if (returnedBook == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }else {
-            return new ResponseEntity<>(returnedBook, HttpStatus.FOUND);
+            return new ResponseEntity<>(returnedBook, HttpStatus.OK);
         }
-
     }
 
     @PutMapping("/updatebook")
