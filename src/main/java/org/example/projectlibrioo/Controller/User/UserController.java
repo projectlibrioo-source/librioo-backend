@@ -3,6 +3,7 @@ package org.example.projectlibrioo.Controller.User;
 import org.example.projectlibrioo.Model.*;
 import org.example.projectlibrioo.Repository.BookRepo;
 import org.example.projectlibrioo.Service.Admin.AdminService;
+import org.example.projectlibrioo.Service.FirebaseService;
 import org.example.projectlibrioo.Service.RobotService.RobotService;
 import org.example.projectlibrioo.Service.Transactions.TransactionService;
 import org.example.projectlibrioo.Service.User.UserService;
@@ -26,6 +27,9 @@ public class UserController {
     private RobotService robotService;
     @Autowired
     private TransactionService transactionService;
+
+    @Autowired
+    private FirebaseService firebaseService;
 
 
     @PostMapping("/loginmember")
@@ -86,6 +90,9 @@ public class UserController {
 
         int shelfNumber = books.get(0).getShelfNumber();
         robotService.navigateToShelf(shelfNumber);
+
+        // ✅ Send shelf number to Firebase Realtime Database
+        firebaseService.sendShelfNumber(shelfNumber);
 
         return ResponseEntity.ok("Robot navigating to shelf " + shelfNumber);
     }

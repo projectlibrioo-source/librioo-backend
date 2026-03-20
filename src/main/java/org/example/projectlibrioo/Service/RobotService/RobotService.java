@@ -1,5 +1,8 @@
 package org.example.projectlibrioo.Service.RobotService;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import org.example.projectlibrioo.Model.Robot;
 import org.example.projectlibrioo.Model.RobotMaintenance;
 import org.example.projectlibrioo.Repository.RobotMaintenanceRepo;
@@ -28,11 +31,25 @@ public class RobotService {
     }
 
     public void navigateToShelf(int shelfNumber) {
-        List<String> path = shelfPathMap.getPath(shelfNumber);
-        String command = String.join(",", path);
-        String encodedCommand = URLEncoder.encode(command, StandardCharsets.UTF_8);
-        String url = "http://10.102.165.232/send?num=" + encodedCommand;
-        restTemplate.getForObject(url, String.class);
+        try {
+            // ✅ Use FirebaseApp instance
+            FirebaseApp app = FirebaseApp.getInstance();
+            DatabaseReference ref = FirebaseDatabase.getInstance(app).getReference("robot");
+
+            // Send shelf number
+            ref.child("targetShelf").setValueAsync(shelfNumber);
+
+            // Update robot status
+            ref.child("status").setValueAsync("MOVING");
+
+            // Reset command
+            ref.child("currentCommand").setValueAsync("");
+
+            System.out.println("✅ Sent shelf " + shelfNumber + " to Firebase");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     // ---------- ROBOT CRUD ----------
