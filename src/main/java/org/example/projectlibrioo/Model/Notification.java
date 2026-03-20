@@ -5,15 +5,16 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
-import org.hibernate.annotations.AnyDiscriminatorImplicitValues;
 
-@Data
 @Entity
-public class Admin {
+@Data
+public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int adminId;
-    private String adminUsername;
-    private String password;
-    private String adminRole;
+    private int id;
+    private String type; // robot, error, book, system
+    private String title;
+    private String text;
+    private String dateStr;
+    private boolean isRead;
 }
