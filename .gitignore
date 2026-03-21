@@ -35,5 +35,4 @@ build/
 ### Mac OS ###
 .DS_Store
 
-# add this line to .gitignore
-src/main/resources/librioo-fb90e-firebase-adminsdk-fbsvc-430550eddd.json
+
