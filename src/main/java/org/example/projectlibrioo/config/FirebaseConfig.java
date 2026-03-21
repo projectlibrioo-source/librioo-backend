@@ -6,25 +6,27 @@ import com.google.firebase.FirebaseOptions;
 import jakarta.annotation.PostConstruct;
 import org.springframework.context.annotation.Configuration;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 @Configuration
 public class FirebaseConfig {
 
 
     @PostConstruct
-    public void initialize() throws Exception {
-        System.out.println("FirebaseConfig loaded");
+    public void initialize() {
         try {
             if (FirebaseApp.getApps().isEmpty()) {
 
-                InputStream serviceAccount = getClass()
-                        .getClassLoader()
-                        .getResourceAsStream("librioo-fb90e-firebase-adminsdk-fbsvc-430550eddd.json");
+                String firebaseJson = System.getenv("FIREBASE_CONFIG");
 
-                if (serviceAccount == null) {
-                    throw new RuntimeException("❌ Firebase JSON file NOT FOUND");
+                if (firebaseJson == null || firebaseJson.isEmpty()) {
+                    throw new RuntimeException("❌ Firebase ENV not set");
                 }
+
+                ByteArrayInputStream serviceAccount =
+                        new ByteArrayInputStream(firebaseJson.getBytes(StandardCharsets.UTF_8));
 
                 FirebaseOptions options = FirebaseOptions.builder()
                         .setCredentials(GoogleCredentials.fromStream(serviceAccount))
@@ -33,10 +35,11 @@ public class FirebaseConfig {
 
                 FirebaseApp.initializeApp(options);
 
-                System.out.println("🔥 Firebase initialized successfully");
+                System.out.println("🔥 Firebase initialized successfully (Railway)");
 
             }
         } catch (Exception e) {
+            System.out.println("❌ Firebase initialization failed");
             e.printStackTrace();
         }
     }
