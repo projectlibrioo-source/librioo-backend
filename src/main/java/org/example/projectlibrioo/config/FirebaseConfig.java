@@ -38,7 +38,11 @@ public class FirebaseConfig {
 
                 FirebaseApp.initializeApp(options);
 
+
                 System.out.println("🔥 Firebase initialized successfully (Base64)");
+
+                FirebaseApp app = FirebaseApp.getInstance();
+                System.out.println(app.getName());
 
             }
         } catch (Exception e) {
