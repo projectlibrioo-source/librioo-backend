@@ -3,6 +3,9 @@ package org.example.projectlibrioo.config;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import jakarta.annotation.PostConstruct;
 import org.springframework.context.annotation.Configuration;
 
@@ -42,6 +45,11 @@ public class FirebaseConfig {
                 System.out.println("🔥 Firebase initialized successfully (Base64)");
 
                 FirebaseApp app = FirebaseApp.getInstance();
+
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("test");
+
+                ref.setValueAsync("hello")
+                .addListener(() -> System.out.println("✅ WRITE SUCCESS"), Runnable::run);
                 System.out.println(app.getName());
 
             }
