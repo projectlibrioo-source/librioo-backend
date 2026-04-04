@@ -24,6 +24,58 @@ public class RobotController {
     @Autowired
     private RobotRepo robotRepository;
 
+    // Navigate to shelf (POST /api/robot/navigate?shelf=3)
+    @PostMapping("/robot/navigate")
+    public ResponseEntity<String> navigateToShelf(@RequestParam("shelf") int shelf) {
+        try {
+            robotService.navigateToShelf(shelf);
+            return ResponseEntity.ok("Moving to shelf " + shelf);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("ERROR: " + e.getMessage());
+        }
+    }
+
+    // Send BACK command (POST /api/robot/back)
+    @PostMapping("/robot/back")
+    public ResponseEntity<String> sendBack() {
+        try {
+            robotService.sendBackCommand();
+            return ResponseEntity.ok("Robot returning to start");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("ERROR: " + e.getMessage());
+        }
+    }
+
+    // Send STOP command (POST /api/robot/stop)
+    @PostMapping("/robot/stop")
+    public ResponseEntity<String> sendStop() {
+        try {
+            robotService.sendStopCommand();
+            return ResponseEntity.ok("Robot stopped");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("ERROR: " + e.getMessage());
+        }
+    }
+
+    // Get current robot status from Firebase (GET /api/robot/status)
+    @GetMapping("/robot/status")
+    public ResponseEntity<String> getRobotStatus() {
+        try {
+            String status = robotService.getRobotStatus();
+            return ResponseEntity.ok(status);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("ERROR: " + e.getMessage());
+        }
+    }
+
     // Add new robot (POST /api/robots/add)
     @PostMapping("/robots/add")
     public ResponseEntity<?> addRobot(@RequestBody Robot robot) {

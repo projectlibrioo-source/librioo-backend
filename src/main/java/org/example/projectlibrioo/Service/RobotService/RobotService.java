@@ -30,25 +30,90 @@ public class RobotService {
         this.robotMaintenanceRepo = robotMaintenanceRepo;
     }
 
+    // ===== NAVIGATE TO SHELF =====
     public void navigateToShelf(int shelfNumber) {
         try {
-            // ✅ Use FirebaseApp instance
             FirebaseApp app = FirebaseApp.getInstance();
             DatabaseReference ref = FirebaseDatabase.getInstance(app).getReference("robot");
 
-            // Send shelf number
             ref.child("targetShelf").setValueAsync(shelfNumber);
-
-            // Update robot status
             ref.child("status").setValueAsync("MOVING");
+            ref.child("currentCommand").setValueAsync("none"); // FIX: "none" not ""
+            ref.child("currentStep").setValueAsync(0);         // reset step progress
 
-            // Reset command
-            ref.child("currentCommand").setValueAsync("");
-
-            System.out.println("✅ Sent shelf " + shelfNumber + " to Firebase");
+            System.out.println("Sent shelf " + shelfNumber + " to Firebase");
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    // ===== SEND BACK COMMAND =====
+    public void sendBackCommand() {
+        try {
+            FirebaseApp app = FirebaseApp.getInstance();
+            DatabaseReference ref = FirebaseDatabase.getInstance(app).getReference("robot");
+
+            ref.child("currentCommand").setValueAsync("BACK");
+            ref.child("status").setValueAsync("RETURNING");
+
+            System.out.println("Sent BACK to Firebase");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // ===== SEND STOP COMMAND =====
+    public void sendStopCommand() {
+        try {
+            FirebaseApp app = FirebaseApp.getInstance();
+            DatabaseReference ref = FirebaseDatabase.getInstance(app).getReference("robot");
+
+            ref.child("currentCommand").setValueAsync("STOP");
+            ref.child("status").setValueAsync("STOPPED");
+
+            System.out.println("Sent STOP to Firebase");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // ===== GET CURRENT ROBOT STATUS FROM FIREBASE =====
+    public String getRobotStatus() {
+        try {
+            FirebaseApp app = FirebaseApp.getInstance();
+            DatabaseReference ref = FirebaseDatabase.getInstance(app)
+                    .getReference("robot/status");
+
+            // Use a semaphore to wait for async Firebase read
+            final String[] status = {"UNKNOWN"};
+            final java.util.concurrent.CountDownLatch latch =
+                    new java.util.concurrent.CountDownLatch(1);
+
+            ref.addListenerForSingleValueEvent(new com.google.firebase.database.ValueEventListener() {
+                @Override
+                public void onDataChange(com.google.firebase.database.DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        status[0] = snapshot.getValue(String.class);
+                    }
+                    latch.countDown();
+                }
+
+                @Override
+                public void onCancelled(com.google.firebase.database.DatabaseError error) {
+                    System.out.println("Firebase read cancelled: " + error.getMessage());
+                    latch.countDown();
+                }
+            });
+
+            latch.await(5, java.util.concurrent.TimeUnit.SECONDS); // wait max 5s
+            return status[0];
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "ERROR";
         }
     }
 
