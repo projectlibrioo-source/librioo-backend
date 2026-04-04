@@ -7,7 +7,7 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.context.annotation.Configuration;
 
 import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+
 import java.nio.charset.StandardCharsets;
 
 @Configuration
@@ -24,6 +24,13 @@ public class FirebaseConfig {
                 if (firebaseJson == null || firebaseJson.isEmpty()) {
                     throw new RuntimeException("❌ Firebase ENV not set");
                 }
+
+                // 🔥 Fix BOTH cases (escaped + real newlines)
+            firebaseJson = firebaseJson
+            .replace("\\n", "\n")   // if stored with \n
+            .replace("\r\n", "\n"); // if Windows formatted
+
+            System.out.println(firebaseJson.contains("BEGIN PRIVATE KEY"));
 
                 ByteArrayInputStream serviceAccount =
                         new ByteArrayInputStream(firebaseJson.getBytes(StandardCharsets.UTF_8));
