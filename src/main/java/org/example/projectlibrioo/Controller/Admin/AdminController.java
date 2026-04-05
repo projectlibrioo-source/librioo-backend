@@ -255,10 +255,16 @@ public class AdminController {
         return "test2";
     }
 
-    //Get all transactions
+    //Get all transactions (raw)
     @GetMapping("/transactions")
     public List<Transactions> getAllTransactions(){
         return transactionService.getAllTransactions();
+    }
+
+    // Get all transactions enriched with member name + book title (for admin table UI)
+    @GetMapping("/transactions/enriched")
+    public List<org.example.projectlibrioo.DTO.TransactionDTO> getAllTransactionsEnriched(){
+        return transactionService.getAllTransactionsEnriched();
     }
 
     @PutMapping("/confirmreturn")
@@ -331,5 +337,23 @@ public class AdminController {
         return new ResponseEntity<>(members, HttpStatus.OK);
     }
 
+    // get all users enriched with booksBorrowed count (for admin Users table)
+    @GetMapping("/users/enriched")
+    public ResponseEntity<List<org.example.projectlibrioo.DTO.UserDTO>> getAllUsersEnriched(){
+        List<Member> members = adminService.getAllMembers();
+        List<org.example.projectlibrioo.DTO.UserDTO> dtos = members.stream().map(m -> {
+            long borrowed = transactionService.countBorrowedByUser(m.getLibraryID());
+            return new org.example.projectlibrioo.DTO.UserDTO(
+                m.getLibraryID(),
+                m.getFullName(),
+                m.getEmail(),
+                m.getPhoneNumber(),
+                m.getStatus(),
+                "Member",
+                (int) borrowed
+            );
+        }).collect(java.util.stream.Collectors.toList());
+        return new ResponseEntity<>(dtos, HttpStatus.OK);
+    }
 
 }

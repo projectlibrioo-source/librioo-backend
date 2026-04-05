@@ -30,6 +30,9 @@ public interface TransactionRepo extends JpaRepository<Transactions,Integer> {
 
 
     Transactions findByBookId(int bookId);
+
+    // Count currently borrowed (not returned) books for a user
+    long countByLibraryId(int libraryId);
 }
 
 

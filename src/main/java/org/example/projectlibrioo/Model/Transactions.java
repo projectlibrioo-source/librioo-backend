@@ -20,4 +20,5 @@ public class Transactions {
     private String category;
     private LocalDate returnDate;
     private String status;
+    private String borrowedThrough; // e.g. "Robot", "Counter"
 }
