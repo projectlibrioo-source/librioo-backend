@@ -19,7 +19,7 @@ public class FirebaseService {
 
         Map<String, Object> updates = new HashMap<>();
         updates.put("targetShelf", shelfNumber);
-        updates.put("status", "NAVIGATING");
+        updates.put("status", "MOVING");
         updates.put("currentStep", 0);
         updates.put("currentCommand", "none");
 
