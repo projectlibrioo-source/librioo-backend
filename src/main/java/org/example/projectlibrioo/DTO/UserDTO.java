@@ -13,6 +13,7 @@ public class UserDTO {
     private String email;
     private String phoneNumber;
     private String status;
-    private String userType;  // "Member"
+    private String role;      // "Member" or "Guest"
+    private String userType;  // "Student", "Lecturer"
     private int booksBorrowed; // count from Transactions table
 }

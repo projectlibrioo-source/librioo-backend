@@ -350,7 +350,8 @@ public class AdminController {
                 m.getEmail(),
                 m.getPhoneNumber(),
                 m.getStatus(),
-                m.getUserType() != null ? m.getUserType() : "Member",
+                "Member", // System Role
+                m.getUserType() != null ? m.getUserType() : "N/A", // Occupation
                 (int) borrowed
             );
         }).collect(java.util.stream.Collectors.toList());
@@ -364,7 +365,8 @@ public class AdminController {
                 g.getEmail(),
                 g.getPhoneNumber(),
                 "ACTIVE", // Guests are always treated as visually active for access
-                "Guest",
+                "Guest", // System Role
+                "N/A", // Occupation
                 0 // Guests cannot borrow books
             );
         }).collect(java.util.stream.Collectors.toList());
