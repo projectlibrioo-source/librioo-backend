@@ -12,7 +12,7 @@ import java.util.Map;
 public class FirebaseService {
 
     public void sendShelfNumber(int shelfNumber) {
-        // ✅ Get FirebaseApp instance explicitly
+        // Get FirebaseApp instance explicitly
         FirebaseApp app = FirebaseApp.getInstance();
         DatabaseReference robotRef = FirebaseDatabase.getInstance(app)
                 .getReference("robot");

@@ -31,7 +31,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/addbook").permitAll()   // 👈 allow your APIs
+                        .requestMatchers("/addbook").permitAll()   // allow your APIs
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults());
@@ -45,7 +45,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll()   // ✅ Allow everything
+                        .anyRequest().permitAll()   // Allow everything
                 );
 
         return http.build();

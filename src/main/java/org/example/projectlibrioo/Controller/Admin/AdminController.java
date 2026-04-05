@@ -55,7 +55,7 @@ public class AdminController {
     //Manage books
     @PostMapping("/addbook")
     public ResponseEntity<?> addBook(
-            @RequestPart("book") String bookJson,  // ✅ Accept as String
+            @RequestPart("book") String bookJson,  // Accept as String
             @RequestPart("bookImage") MultipartFile bookImage) {
 
         try {

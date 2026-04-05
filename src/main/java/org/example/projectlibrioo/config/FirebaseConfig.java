@@ -21,14 +21,14 @@ public class FirebaseConfig {
         try {
             if (FirebaseApp.getApps().isEmpty()) {
 
-                // 🔐 Read Base64 from Railway ENV
+                // Read Base64 from Railway ENV
                 String base64 = System.getenv("FIREBASE_CONFIG_BASE64");
 
                 if (base64 == null || base64.isEmpty()) {
-                    throw new RuntimeException("❌ FIREBASE_CONFIG_BASE64 not set");
+                    throw new RuntimeException("FIREBASE_CONFIG_BASE64 not set");
                 }
 
-                // 🔥 Decode Base64 → original JSON
+                // Decode Base64 → original JSON
                 byte[] decoded = Base64.getDecoder().decode(base64);
 
                 InputStream serviceAccount =
@@ -42,19 +42,19 @@ public class FirebaseConfig {
                 FirebaseApp.initializeApp(options);
 
 
-                System.out.println("🔥 Firebase initialized successfully (Base64)");
+                System.out.println("Firebase initialized successfully (Base64)");
 
                 FirebaseApp app = FirebaseApp.getInstance();
 
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference("test");
 
                 ref.setValueAsync("hello")
-                .addListener(() -> System.out.println("✅ WRITE SUCCESS"), Runnable::run);
+                .addListener(() -> System.out.println("WRITE SUCCESS"), Runnable::run);
                 System.out.println(app.getName());
 
             }
         } catch (Exception e) {
-            System.out.println("❌ Firebase initialization failed");
+            System.out.println("Firebase initialization failed");
             e.printStackTrace();
         }
     }

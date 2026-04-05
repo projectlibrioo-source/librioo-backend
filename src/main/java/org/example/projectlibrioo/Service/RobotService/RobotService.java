@@ -60,7 +60,7 @@ public class RobotService {
             DatabaseReference pathRef = rootRef.child("paths").child(String.format("%02d", shelfNumber));
             DatabaseReference robotRef = rootRef.child("robot");
 
-            // 🔥 Read path from Firebase
+            // Read path from Firebase
             final List<String> pathList = new ArrayList<>();
             final CountDownLatch latch = new CountDownLatch(1);
 
@@ -84,13 +84,13 @@ public class RobotService {
 
             latch.await(5, TimeUnit.SECONDS);
 
-            // 🚨 CHECK IF PATH FOUND
+            // CHECK IF PATH FOUND
             if (pathList.isEmpty()) {
                 System.out.println("No path found for shelf " + shelfNumber);
                 return;
             }
 
-            // 🔥 SEND TO ROBOT NODE
+            // SEND TO ROBOT NODE
             Map<String, Object> updates = new HashMap<>();
             updates.put("targetShelf", shelfNumber);
             updates.put("path", pathList);
