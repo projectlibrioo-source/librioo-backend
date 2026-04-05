@@ -91,8 +91,7 @@ public class UserController {
         int shelfNumber = books.get(0).getShelfNumber();
         robotService.navigateToShelf(shelfNumber);
 
-        // ✅ Send shelf number to Firebase Realtime Database
-        firebaseService.sendShelfNumber(shelfNumber);
+        
 
         return ResponseEntity.ok("Robot navigating to shelf " + shelfNumber);
     }
