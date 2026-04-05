@@ -340,6 +340,7 @@ public class AdminController {
     // get all users enriched with booksBorrowed count (for admin Users table)
     @GetMapping("/users/enriched")
     public ResponseEntity<List<org.example.projectlibrioo.DTO.UserDTO>> getAllUsersEnriched(){
+        // Fetch Members
         List<Member> members = adminService.getAllMembers();
         List<org.example.projectlibrioo.DTO.UserDTO> dtos = members.stream().map(m -> {
             long borrowed = transactionService.countBorrowedByUser(m.getLibraryID());
@@ -349,10 +350,28 @@ public class AdminController {
                 m.getEmail(),
                 m.getPhoneNumber(),
                 m.getStatus(),
-                "Member",
+                m.getUserType() != null ? m.getUserType() : "Member",
                 (int) borrowed
             );
         }).collect(java.util.stream.Collectors.toList());
+
+        // Fetch Guests
+        List<Guest> guests = adminService.getAllGuests();
+        List<org.example.projectlibrioo.DTO.UserDTO> guestDtos = guests.stream().map(g -> {
+            return new org.example.projectlibrioo.DTO.UserDTO(
+                g.getGuestID(),
+                g.getFullName(),
+                g.getEmail(),
+                g.getPhoneNumber(),
+                "ACTIVE", // Guests are always treated as visually active for access
+                "Guest",
+                0 // Guests cannot borrow books
+            );
+        }).collect(java.util.stream.Collectors.toList());
+
+        // Combine
+        dtos.addAll(guestDtos);
+
         return new ResponseEntity<>(dtos, HttpStatus.OK);
     }
 

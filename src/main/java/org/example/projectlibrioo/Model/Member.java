@@ -18,4 +18,5 @@ public class Member {
     private int age;
     private String NICNumber;
     private String status;
+    private String userType;
 }
