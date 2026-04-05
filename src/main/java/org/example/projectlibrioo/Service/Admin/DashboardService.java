@@ -35,14 +35,16 @@ public class DashboardService {
         long totalGuests = guestRepository.count();
         long totalUsers = totalMembers + totalGuests;
 
-        long activeUsers = memberRepository.countByStatus("ACTIVE");
+        long activeUsers = memberRepository.countByStatus("ACTIVE") + memberRepository.countByStatus("Active") + memberRepository.countByStatus("active");
 
-        long booksBorrowed = transactionsRepository.countByStatus("BORROWED");
+        long booksBorrowed = transactionsRepository.countByStatus("Borrowed") + transactionsRepository.countByStatus("BORROWED");
 
         long overdueBooks = transactionsRepository
+                .countByReturnDateBeforeAndStatus(LocalDate.now(), "Borrowed")
+                + transactionsRepository
                 .countByReturnDateBeforeAndStatus(LocalDate.now(), "BORROWED");
 
-        long activeRobots = robotRepository.countByStatus("ACTIVE");
+        long activeRobots = robotRepository.countByStatus("ACTIVE") + robotRepository.countByStatus("Active");
 
         return new DashboardDTO(
                 totalBooks,

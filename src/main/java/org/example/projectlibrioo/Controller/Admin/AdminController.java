@@ -255,10 +255,16 @@ public class AdminController {
         return "test2";
     }
 
-    //Get all transactions
+    //Get all transactions (raw)
     @GetMapping("/transactions")
     public List<Transactions> getAllTransactions(){
         return transactionService.getAllTransactions();
+    }
+
+    // Get all transactions enriched with member name + book title (for admin table UI)
+    @GetMapping("/transactions/enriched")
+    public List<org.example.projectlibrioo.DTO.TransactionDTO> getAllTransactionsEnriched(){
+        return transactionService.getAllTransactionsEnriched();
     }
 
     @PutMapping("/confirmreturn")
@@ -331,5 +337,44 @@ public class AdminController {
         return new ResponseEntity<>(members, HttpStatus.OK);
     }
 
+    // get all users enriched with booksBorrowed count (for admin Users table)
+    @GetMapping("/users/enriched")
+    public ResponseEntity<List<org.example.projectlibrioo.DTO.UserDTO>> getAllUsersEnriched(){
+        // Fetch Members
+        List<Member> members = adminService.getAllMembers();
+        List<org.example.projectlibrioo.DTO.UserDTO> dtos = members.stream().map(m -> {
+            long borrowed = transactionService.countBorrowedByUser(m.getLibraryID());
+            return new org.example.projectlibrioo.DTO.UserDTO(
+                m.getLibraryID(),
+                m.getFullName(),
+                m.getEmail(),
+                m.getPhoneNumber(),
+                m.getStatus(),
+                "Member", // System Role
+                m.getUserType() != null ? m.getUserType() : "N/A", // Occupation
+                (int) borrowed
+            );
+        }).collect(java.util.stream.Collectors.toList());
+
+        // Fetch Guests
+        List<Guest> guests = adminService.getAllGuests();
+        List<org.example.projectlibrioo.DTO.UserDTO> guestDtos = guests.stream().map(g -> {
+            return new org.example.projectlibrioo.DTO.UserDTO(
+                g.getGuestID(),
+                g.getFullName(),
+                g.getEmail(),
+                g.getPhoneNumber(),
+                "ACTIVE", // Guests are always treated as visually active for access
+                "Guest", // System Role
+                "N/A", // Occupation
+                0 // Guests cannot borrow books
+            );
+        }).collect(java.util.stream.Collectors.toList());
+
+        // Combine
+        dtos.addAll(guestDtos);
+
+        return new ResponseEntity<>(dtos, HttpStatus.OK);
+    }
 
 }

@@ -11,6 +11,7 @@ import org.example.projectlibrioo.Repository.RobotRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import jakarta.annotation.PostConstruct;
 
 import java.util.List;
 
@@ -25,6 +26,27 @@ public class AdminService {
     private MemberRepo memberRepo;
     @Autowired
     private RobotRepo robotRepo;
+
+    @PostConstruct
+    public void migrateLegacyStatusData() {
+        System.out.println("--- Starting Data Cleanup Runner ---");
+        List<Member> allMembers = memberRepo.findAll();
+        int updated = 0;
+        for (Member m : allMembers) {
+            String status = m.getStatus();
+            if (status != null && (status.equalsIgnoreCase("Student") || 
+                status.equalsIgnoreCase("Lecturer") || 
+                status.equalsIgnoreCase("Staff") || 
+                status.equalsIgnoreCase("Other"))) {
+                
+                m.setUserType(status);
+                m.setStatus("ACTIVE");
+                memberRepo.save(m);
+                updated++;
+            }
+        }
+        System.out.println("--- Completed Data Cleanup Runner: Updated " + updated + " records ---");
+    }
 
     // save book
     public Book saveBookData(Book book, MultipartFile bookImage) throws Exception {
@@ -159,6 +181,10 @@ public class AdminService {
     // get all users for the users page
     public List<Member> getAllMembers(){
         return memberRepo.findAll();
+    }
+
+    public List<Guest> getAllGuests() {
+        return guestRepo.findAll();
     }
 
 
